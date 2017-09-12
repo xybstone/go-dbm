@@ -1,6 +1,7 @@
-package router
+package dbm_router
 
 import (
+	"encoding/json"
 	"os"
 	"strings"
 	"ucenter/config/error_code"
@@ -15,10 +16,17 @@ type BaseServer struct {
 	Ctx *fasthttp.RequestCtx
 }
 
+//ServerJSON 服务器返回
+func (ba *BaseServer) ServerJSON(ctx *fasthttp.RequestCtx, v interface{}) {
+	if b, err := json.Marshal(v); err == nil {
+		ctx.Write(b)
+	}
+}
+
 //HandleRoot 测试页
 func (ba *BaseServer) HandleRoot(ctx *fasthttp.RequestCtx) {
 	SetAPICustomHeader(ctx)
-	ctx.Write([]byte("{\"version\": \"1.0.0.1\"}"))
+	ctx.Write([]byte("{\"version\": \"1.0.0.2\"}"))
 	return
 }
 

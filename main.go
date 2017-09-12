@@ -8,13 +8,13 @@ import (
 	"syscall"
 	"time"
 
-	"apigateway.gaodun.com/api"
+	"github.com/xybstone/go-dbm/router"
 )
 
 const (
 	//NetworkAddr 端口
 	NetworkAddr = "0.0.0.0:6064"
-	maxWaitTime = 2 * time.Second
+	maxWaitTime = 1 * time.Second
 )
 
 func main() {
@@ -25,7 +25,7 @@ func main() {
 		syscall.SIGUSR2,
 	)
 	networkAddr := graceful.NewGracefulListener(NetworkAddr, maxWaitTime)
-	go api.Run(networkAddr)
+	go dbm_router.Run(networkAddr)
 	s := <-exit
 	networkAddr.Close()
 	fmt.Println("shutting down server .", s)

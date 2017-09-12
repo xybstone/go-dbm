@@ -1,4 +1,4 @@
-package router
+package dbm_router
 
 import (
 	"net"
@@ -49,11 +49,16 @@ var dct Decorator
 
 func getRouter() *fasthttprouter.Router {
 	bs := NewBaseServer()
+	//dbs router
+	dbs := &DBServer{}
 	APIRouteList := map[string]APIRoute{
 		"/":       {[]string{"GET", "POST"}, bs.HandleRoot},
 		"/status": {[]string{"GET"}, bs.GetStatus},
+		//v1
+		"/api/v1/servers": {[]string{"GET"}, dbs.GetServers},
 	}
-	//app router
+
+	//APIRouteList["/servers"] = APIRoute{[]string{"GET"}, dbs.GetServers}
 
 	router := &fasthttprouter.Router{
 		RedirectTrailingSlash:  true,
